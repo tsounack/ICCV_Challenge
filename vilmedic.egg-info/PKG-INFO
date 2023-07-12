@@ -1,0 +1,13 @@
+Metadata-Version: 2.1
+Name: vilmedic
+Version: 1.3.0
+Summary: ViLMedic is a modular framework for multimodal research at the intersection of vision and language in the medical field.
+Author: Jean-Benoit Delbrouck
+License: MIT
+Keywords: medical nlp deep-learning pytorch
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Scientific/Engineering
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3 :: Only
+Requires-Python: >=3.8
+License-File: LICENSE
