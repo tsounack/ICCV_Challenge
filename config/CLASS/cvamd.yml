@@ -10,7 +10,7 @@ dataset:
   image:
     root: data/CLASS/CVAMD
     file: image.tok
-    image_path: data/images/mimic-cxr-images-512
+    image_path: /scratch/users/tsounack/mimic-cxr-images-512
     load_memory: False
     resize: 256
     crop: 224
