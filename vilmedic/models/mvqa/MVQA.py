@@ -14,9 +14,9 @@ from transformers.models.bert_generation import BertGenerationConfig
 from vilmedic.blocks.losses.mvqa.LabelSmoothingCrossEntropyLoss import WeightedBCEWithLogitsLoss
 
 
-class MVQA(nn.Module):
+class ICCV(nn.Module):
     def __init__(self, classifier, loss, **kwargs):
-        super(MVQA, self).__init__()
+        super(ICCV, self).__init__()
 
         params = {
             'embed_dim':768,
