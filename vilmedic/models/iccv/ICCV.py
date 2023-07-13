@@ -51,6 +51,7 @@ class ICCV(nn.Module):
         # cnn_func = cnn.pop('proto')
         loss_func = loss.pop('proto')
         classifier_func = classifier.pop('proto')
+        print(classifier_func["input_size"], type(classifier_func["input_size"]))
         classifier_func["input_size"] = last_layer_size
 
         # self.cnn = eval(cnn_func)(**cnn)
