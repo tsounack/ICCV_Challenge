@@ -34,8 +34,8 @@ from PIL import Image
 from torchvision.transforms import Compose, Resize, CenterCrop, ToTensor, Normalize
 from tqdm import tqdm
 
-# from model import build_model
-from simple_tokenizer import SimpleTokenizer as _Tokenizer
+from vilmedic.models.iccv.model import build_model
+from vilmedic.models.iccv.simple_tokenizer import SimpleTokenizer as _Tokenizer
 
 __all__ = ["available_models", "load", "tokenize"]
 _tokenizer = _Tokenizer()
