@@ -46,7 +46,7 @@ class ICCV(nn.Module):
         
         self.transformer = model.visual
 
-        last_layer_size = self.transformer[-1].in_features
+        last_layer_size = 768
 
         # cnn_func = cnn.pop('proto')
         loss_func = loss.pop('proto')
