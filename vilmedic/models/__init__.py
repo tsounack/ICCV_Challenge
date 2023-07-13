@@ -1,5 +1,5 @@
+from vilmedic.models.mvqa_2.MVQA import MVQA
 from vilmedic.models.mvqa.MVQA import MVQA
-from vilmedic.models.iccv.ICCV import ICCV
 
 from vilmedic.models.rrs.SumRNN import SumRNN
 from vilmedic.models.rrs.SumHugMulti import SumHugMulti
