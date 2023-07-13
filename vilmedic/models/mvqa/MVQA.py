@@ -15,7 +15,7 @@ from vilmedic.blocks.losses.mvqa.LabelSmoothingCrossEntropyLoss import WeightedB
 
 
 class MVQA(nn.Module):
-    def __init__(self, cnn, classifier, adapter, transformer, loss, **kwargs):
+    def __init__(self, classifier, loss, **kwargs):
         super(MVQA, self).__init__()
 
         params = {
