@@ -16,7 +16,7 @@ from vilmedic.blocks.losses.mvqa.LabelSmoothingCrossEntropyLoss import WeightedB
 
 class ICCV(nn.Module):
     def __init__(self, cnn, classifier, adapter, transformer, loss, **kwargs):
-        super(ICCV, self).__init__()
+        super().__init__()
 
         params = {
             'embed_dim':768,
