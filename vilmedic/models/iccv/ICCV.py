@@ -61,7 +61,8 @@ class ICCV(nn.Module):
             nn.Linear(hidden_units[2], hidden_units[3]),
             nn.ReLU(),
             nn.Linear(hidden_units[3], hidden_units[4]),
-            nn.ReLU()
+            nn.ReLU(),
+            nn.Linear(hidden_units[4], output_dim)
         )
 
         loss_func = loss.pop('proto')
