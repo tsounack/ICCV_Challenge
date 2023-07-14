@@ -70,12 +70,16 @@ class ICCV(nn.Module):
 
     def forward(self, images, labels=None, from_training=True, iteration=None, epoch=None, **kwargs):
         out = self.transformer_in(images.cuda())
+        print("passed transformer_in")
         out = self.adapter(out)
+        print("passed adapter")
         out = self.transformer(out, output_attentions=True)
+        print("passed transformer")
 
         attentions = out.attentions  # num_layers, batch_size, num_heads, sequence_length, sequence_length
         
         out = self.pooler(out.last_hidden_state)
+        print("passed pooler")
         out = self.classifier(out)
 
         loss = torch.tensor(0.)
