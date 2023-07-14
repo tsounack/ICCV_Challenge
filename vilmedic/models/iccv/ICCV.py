@@ -79,6 +79,7 @@ class ICCV(nn.Module):
         # attentions = out.attentions  # num_layers, batch_size, num_heads, sequence_length, sequence_length
         images = images.to(torch.float16)
         out = self.transformer(images.cuda())
+        out = out.float()
         out = self.classifier(out)
 
         loss = torch.tensor(0.)
