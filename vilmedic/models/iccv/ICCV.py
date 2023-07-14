@@ -51,22 +51,17 @@ class ICCV(nn.Module):
 
         hidden_units = [400, 300, 200, 100, 50]
 
-        self.dense = nn.Sequential(
+        self.dense = model = nn.Sequential(
             nn.Linear(input_dim, hidden_units[0]),
             nn.ReLU(),
-            nn.MaxPool1d(kernel_size=2),
             nn.Linear(hidden_units[0], hidden_units[1]),
             nn.ReLU(),
-            nn.MaxPool1d(kernel_size=2),
             nn.Linear(hidden_units[1], hidden_units[2]),
             nn.ReLU(),
-            nn.MaxPool1d(kernel_size=2),
             nn.Linear(hidden_units[2], hidden_units[3]),
             nn.ReLU(),
-            nn.MaxPool1d(kernel_size=2),
             nn.Linear(hidden_units[3], hidden_units[4]),
-            nn.ReLU(),
-            nn.Linear(hidden_units[4], output_dim)
+            nn.ReLU()
         )
 
         loss_func = loss.pop('proto')
