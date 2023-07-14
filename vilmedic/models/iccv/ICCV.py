@@ -86,7 +86,7 @@ class ICCV(nn.Module):
         if from_training:
             loss = self.loss_func(out, labels.cuda(), **kwargs)
 
-        return {'loss': loss, 'output': out, 'answer': torch.argmax(out, dim=-1), 'attentions': attentions}
+        return {'loss': loss, 'output': out, 'answer': torch.argmax(out, dim=-1), 'attentions': None}
 
     def __repr__(self):
         s = super().__repr__() + '\n'
