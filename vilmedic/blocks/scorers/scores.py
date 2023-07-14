@@ -86,6 +86,7 @@ def compute_scores(metrics, refs, hyps, split, seed, config, epoch, logger, dump
         elif metric == 'mapaccuracy':
             scores['mapaccuracy'] = np.nanmean(average_precision_score(refs, F.sigmoid(torch.from_numpy(hyps)).numpy(), average=None))
         elif metric == 'ap':
+            print(refs, hyps)
             scores['ap'] = average_precision_score(refs, F.sigmoid(torch.from_numpy(hyps)).numpy(), average=None).tolist()
 
         elif metric == 'f1-score':
