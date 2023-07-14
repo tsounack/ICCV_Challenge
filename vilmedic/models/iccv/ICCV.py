@@ -48,20 +48,8 @@ class ICCV(nn.Module):
 
         last_layer_size = 512
 
-        # cnn_func = cnn.pop('proto')
         loss_func = loss.pop('proto')
         classifier_func = classifier.pop('proto')
-        # classifier_func["input_size"] = last_layer_size
-
-        # self.cnn = eval(cnn_func)(**cnn)
-        # self.adapter = nn.Sequential(
-        #     nn.Linear(adapter.pop('input_size'), adapter.pop('output_size')),
-        #     torch.nn.LayerNorm(transformer.hidden_size, eps=transformer.layer_norm_eps)
-        # )
-
-        # bert_conf = BertGenerationConfig(**transformer)
-        # self.transformer = BertEncoder(bert_conf)
-        # self.pooler = BertPooler(bert_conf)
 
         self.classifier = eval(classifier_func)(input_size=last_layer_size, num_classes=27)
 
@@ -72,17 +60,8 @@ class ICCV(nn.Module):
         self.eval_func = evaluation
 
     def forward(self, images, labels=None, from_training=True, iteration=None, epoch=None, **kwargs):
-        # out = self.cnn(images.cuda())
-        # out = self.adapter(out)
-        # out = self.transformer(out, output_attentions=True)
-
-        # attentions = out.attentions  # num_layers, batch_size, num_heads, sequence_length, sequence_length
-        # images = images.to(torch.float16)
         out = self.transformer(images.cuda())
-        print(out.shape, out)
-        # out = out.float()
         out = self.classifier(out)
-        print(out.shape, out)
 
         loss = torch.tensor(0.)
         if from_training:
