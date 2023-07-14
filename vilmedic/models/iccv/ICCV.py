@@ -57,10 +57,10 @@ class ICCV(nn.Module):
         self.transformer = BertEncoder(bert_conf)
         self.pooler = BertPooler(bert_conf)
 
+        classifier_func = classifier.pop('proto')
         self.classifier = eval(classifier_func)(**classifier)
 
         loss_func = loss.pop('proto')
-        classifier_func = classifier.pop('proto')
 
         self.loss_func = eval(loss_func)(**loss).cuda()
 
