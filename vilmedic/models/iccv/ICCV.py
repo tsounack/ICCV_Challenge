@@ -82,6 +82,7 @@ class ICCV(nn.Module):
         print(out.shape, out)
         out = out.float()
         out = self.classifier(out)
+        print(out.shape, out)
 
         loss = torch.tensor(0.)
         if from_training:
