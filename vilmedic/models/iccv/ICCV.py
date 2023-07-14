@@ -46,19 +46,28 @@ class ICCV(nn.Module):
         
         self.transformer_in = model.visual
 
-        last_layer_size = 512
+        input_dim = 512
+        output_dim = 27
 
-        self.adapter = nn.Sequential(
-            nn.Linear(last_layer_size, adapter.pop('output_size')),
-            torch.nn.LayerNorm(transformer.hidden_size, eps=transformer.layer_norm_eps)
+        hidden_units = [400, 300, 200, 100, 50]
+
+        self.dense = nn.Sequential(
+            nn.Linear(input_dim, hidden_units[0]),
+            nn.ReLU(),
+            nn.MaxPool1d(kernel_size=2),
+            nn.Linear(hidden_units[0], hidden_units[1]),
+            nn.ReLU(),
+            nn.MaxPool1d(kernel_size=2),
+            nn.Linear(hidden_units[1], hidden_units[2]),
+            nn.ReLU(),
+            nn.MaxPool1d(kernel_size=2),
+            nn.Linear(hidden_units[2], hidden_units[3]),
+            nn.ReLU(),
+            nn.MaxPool1d(kernel_size=2),
+            nn.Linear(hidden_units[3], hidden_units[4]),
+            nn.ReLU(),
+            nn.Linear(hidden_units[4], output_dim)
         )
-
-        bert_conf = BertGenerationConfig(**transformer)
-        self.transformer = BertEncoder(bert_conf)
-        self.pooler = BertPooler(bert_conf)
-
-        classifier_func = classifier.pop('proto')
-        self.classifier = eval(classifier_func)(**classifier)
 
         loss_func = loss.pop('proto')
 
@@ -70,17 +79,7 @@ class ICCV(nn.Module):
 
     def forward(self, images, labels=None, from_training=True, iteration=None, epoch=None, **kwargs):
         out = self.transformer_in(images.cuda())
-        print("passed transformer_in")
-        out = self.adapter(out)
-        print("passed adapter")
-        out = self.transformer(out, output_attentions=True)
-        print("passed transformer")
-
-        attentions = out.attentions  # num_layers, batch_size, num_heads, sequence_length, sequence_length
-        
-        out = self.pooler(out.last_hidden_state)
-        print("passed pooler")
-        out = self.classifier(out)
+        out = self.dense(out)
 
         loss = torch.tensor(0.)
         if from_training:
