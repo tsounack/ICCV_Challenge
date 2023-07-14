@@ -38,7 +38,7 @@ class ICCV(nn.Module):
         model, preprocess = clip.load("ViT-B/32", device=device, jit=False)
         print("Loaded in pretrained model.")
 
-        model_path = "/home/users/tsounack/vilmedic/ICCV_Challenge/ckpt_chexzero/best_128_5e-05_original_22000_0.855.pt"
+        model_path = "/scratch/users/tsounack/ICCV/ckpt_chexzero/best_64_5e-05_original_22000_0.864.pt"
         
         # if a model_path is provided, load in weights to backbone
         if model_path != None: 
@@ -49,14 +49,12 @@ class ICCV(nn.Module):
         input_dim = 512
         output_dim = 27
 
-        hidden_units = [400, 300, 200, 100, 50]
+        # hidden_units = [400, 300, 200, 100, 50]
 
         self.dense = model = nn.Sequential(
-            nn.Linear(input_dim, hidden_units[0]),
+            nn.Linear(input_dim, 250),
             nn.ReLU(),
-            nn.Linear(hidden_units[0], hidden_units[2]),
-            nn.ReLU(),
-            nn.Linear(hidden_units[2], output_dim)
+            nn.Linear(250, output_dim)
         )
 
         loss_func = loss.pop('proto')
