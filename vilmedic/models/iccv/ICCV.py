@@ -52,7 +52,8 @@ class ICCV(nn.Module):
         hidden_units = [400, 300, 200, 100, 50]
 
         self.dense = model = nn.Sequential(
-            nn.Linear(input_dim, hidden_units[1]),
+            nn.Linear(input_dim, hidden_units[0]),
+            nn.Linear(hidden_units[0], hidden_units[1]),
             nn.Linear(hidden_units[1], output_dim)
         )
 
