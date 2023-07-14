@@ -38,7 +38,7 @@ class ICCV(nn.Module):
         model, preprocess = clip.load("ViT-B/32", device=device, jit=False)
         print("Loaded in pretrained model.")
 
-        model_path = "/scratch/users/tsounack/ICCV/ckpt_chexzero/best_64_5e-05_original_22000_0.864.pt"
+        model_path = "/scratch/users/tsounack/ICCV/best_64_5e-05_original_22000_0.864.pt"
         
         # if a model_path is provided, load in weights to backbone
         if model_path != None: 
