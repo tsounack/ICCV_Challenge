@@ -15,7 +15,7 @@ from vilmedic.blocks.losses.mvqa.LabelSmoothingCrossEntropyLoss import WeightedB
 
 
 class ICCV(nn.Module):
-    def __init__(self, classifier, loss, **kwargs):
+    def __init__(self, classifier, adapter, transformer, loss, **kwargs):
         super(ICCV, self).__init__()
 
         params = {
@@ -38,20 +38,29 @@ class ICCV(nn.Module):
         model, preprocess = clip.load("ViT-B/32", device=device, jit=False)
         print("Loaded in pretrained model.")
 
-        model_path = "/home/users/tsounack/vilmedic/ICCV_Challenge/ckpt_chexzero/best_64_5e-05_original_18000_0.862.pt"
+        model_path = "/home/users/tsounack/vilmedic/ICCV_Challenge/ckpt_chexzero/best_128_5e-05_original_22000_0.855.pt"
         
         # if a model_path is provided, load in weights to backbone
         if model_path != None: 
             model.load_state_dict(torch.load(model_path, map_location=device))
         
-        self.transformer = model.visual
+        self.transformer_in = model.visual
 
         last_layer_size = 512
 
+        self.adapter = nn.Sequential(
+            nn.Linear(last_layer_size, adapter.pop('output_size')),
+            torch.nn.LayerNorm(transformer.hidden_size, eps=transformer.layer_norm_eps)
+        )
+
+        bert_conf = BertGenerationConfig(**transformer)
+        self.transformer = BertEncoder(bert_conf)
+        self.pooler = BertPooler(bert_conf)
+
+        self.classifier = eval(classifier_func)(**classifier)
+
         loss_func = loss.pop('proto')
         classifier_func = classifier.pop('proto')
-
-        self.classifier = eval(classifier_func)(input_size=last_layer_size, num_classes=27)
 
         self.loss_func = eval(loss_func)(**loss).cuda()
 
@@ -60,14 +69,20 @@ class ICCV(nn.Module):
         self.eval_func = evaluation
 
     def forward(self, images, labels=None, from_training=True, iteration=None, epoch=None, **kwargs):
-        out = self.transformer(images.cuda())
+        out = self.transformer_in(images.cuda())
+        out = self.adapter(out)
+        out = self.transformer(out, output_attentions=True)
+
+        attentions = out.attentions  # num_layers, batch_size, num_heads, sequence_length, sequence_length
+        
+        out = self.pooler(out.last_hidden_state)
         out = self.classifier(out)
 
         loss = torch.tensor(0.)
         if from_training:
             loss = self.loss_func(out, labels.cuda(), **kwargs)
 
-        return {'loss': loss, 'output': out, 'answer': torch.argmax(out, dim=-1), 'attentions': None}
+        return {'loss': loss, 'output': out, 'answer': torch.argmax(out, dim=-1), 'attentions': attentions}
 
     def __repr__(self):
         s = super().__repr__() + '\n'
