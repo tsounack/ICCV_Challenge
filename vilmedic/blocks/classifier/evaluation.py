@@ -24,7 +24,7 @@ def evaluation(models, config, dl, **kwargs):
             num_samples = len(dl.dataset)
             logits_list = [np.zeros((num_samples, len(models), num_classes)) for _ in range(batch_size)]
             labels_list = [np.zeros((num_samples, num_classes)) for _ in range(batch_size)]
-            losses_list = [np.zeros(len(models)) for _ in range(len(dl))]
+            losses_list = [[] for _ in range(len(dl))]
 
         # iterating over the batch, stacking refs and hyps
         for i in range(batch_size):
@@ -35,7 +35,7 @@ def evaluation(models, config, dl, **kwargs):
         # Loss
         for j, r in enumerate(results):
             loss_value = r['loss'].cpu().item() if isinstance(r['loss'], torch.Tensor) and r['loss'].numel() == 1 else r['loss'].cpu().numpy()
-            losses_list[num_batch][j] = loss_value
+            losses_list[num_batch].append(loss_value)
 
         cumulative_index += batch_size
 
