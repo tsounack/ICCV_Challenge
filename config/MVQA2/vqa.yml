@@ -20,7 +20,7 @@ model:
   proto: MVQA
   cnn:
     proto: CNN
-    backbone: densenet264
+    backbone: densenet201
     output_layer: features
     dropout_out: 0.0
     permute: batch_first
