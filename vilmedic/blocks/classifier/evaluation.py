@@ -5,10 +5,9 @@ from tqdm import tqdm
 
 
 def evaluation(models, config, dl, **kwargs):
-    logits = np.array([])
-    labels = np.array([])
-    losses = np.array([])
-    # attentions = None
+    logits_list = []
+    labels_list = []
+    losses_list = []
     cumulative_index = 0
     post_processing = {}
 
@@ -17,49 +16,35 @@ def evaluation(models, config, dl, **kwargs):
         batch_size = label.shape[0]
         num_classes = label.shape[1]
 
-        batch = {k: v.cuda() if (isinstance(v, torch.Tensor) and torch.cuda.is_available()) else v for k, v in
-                 batch.items()}
+        batch = {k: v.cuda() if (isinstance(v, torch.Tensor) and torch.cuda.is_available()) else v for k, v in batch.items()}
         results = [model(**batch) for model in models]
 
         # Pre-allocate memory
         if num_batch == 0:
-            logits = np.zeros((len(dl.dataset), len(models), num_classes))
-            labels = np.zeros((len(dl.dataset), num_classes))
-            losses = np.zeros((len(dl), len(models)))
-            # if 'attentions' in results[0]:
-            #     # results[0]['attentions'] is num_layers x batch_size x num_heads x sequence_length x sequence_length
-            #     num_layers = len(results[0]['attentions'])
-            #     attention_shape = results[0]['attentions'][0][0].shape
-            #     attentions = np.zeros((len(dl.dataset), len(models), num_layers, *attention_shape))
+            num_samples = len(dl.dataset)
+            logits_list = [np.zeros((num_samples, len(models), num_classes)) for _ in range(batch_size)]
+            labels_list = [np.zeros((num_samples, num_classes)) for _ in range(batch_size)]
+            losses_list = [np.zeros(len(models)) for _ in range(len(dl))]
 
         # iterating over the batch, stacking refs and hyps
         for i in range(batch_size):
             for j, r in enumerate(results):
-                logits[cumulative_index + i][j] = r['output'][i].data.cpu().numpy()
-            labels[cumulative_index + i] = label[i].data.cpu().numpy()
-            
+                logits_list[i][cumulative_index: cumulative_index + batch_size, j] = r['output'][i].data.cpu().numpy()
+            labels_list[i][cumulative_index: cumulative_index + batch_size] = label[i].data.cpu().numpy()
 
         # Loss
         for j, r in enumerate(results):
-            losses[num_batch][j] = r['loss'].cpu().item()
-
-        # # Handle attention weights
-        # if attentions is not None:
-        #     for j, r in enumerate(results):
-        #         for k, attention_layer in enumerate(r['attentions']):
-        #             for i in range(batch_size):
-        #                 attentions[cumulative_index + i][j][k] = attention_layer[i].data.cpu().numpy()
+            losses_list[num_batch][j] = r['loss'].cpu().item()
 
         cumulative_index += batch_size
 
-        # break
+        break
+
+    logits = np.concatenate(logits_list, axis=0)
+    labels = np.concatenate(labels_list, axis=0)
+    losses = np.concatenate(losses_list, axis=0)
 
     preds = np.mean(logits, axis=1)
     loss = np.mean(losses)
-    logits = np.squeeze(logits)
-    labels = np.squeeze(labels)
-
-    # if attentions:
-    #     post_processing["attentions"] = np.array(attentions)
 
     return {'loss': loss, 'refs': labels, 'hyps': logits}
