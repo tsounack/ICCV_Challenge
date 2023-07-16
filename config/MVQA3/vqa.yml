@@ -76,5 +76,5 @@ validator:
 ensemblor:
   batch_size: 16
   metrics: [ap, mapaccuracy]
-  splits: [validate, test]
+  splits: [test]
   mode: all
