@@ -1,5 +1,5 @@
 name: myvqa
-ckpt_dir: ckpt_mvqa2
+ckpt_dir: ckpt_mvqa3
 
 dataset:
   proto: ImLabel
