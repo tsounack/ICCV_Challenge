@@ -17,7 +17,7 @@ dataset:
     ext: .jpg
 
 model:
-  proto: ICCV
+  proto: MVQA
   cnn:
     proto: CNN
     backbone: densenet169
