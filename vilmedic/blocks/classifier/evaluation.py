@@ -34,11 +34,12 @@ def evaluation(models, config, dl, **kwargs):
 
         # Loss
         for j, r in enumerate(results):
-            losses_list[num_batch][j] = r['loss'].cpu().item()
+            loss_value = r['loss'].cpu().item() if isinstance(r['loss'], torch.Tensor) and r['loss'].numel() == 1 else r['loss'].cpu().numpy()
+            losses_list[num_batch][j] = loss_value
 
         cumulative_index += batch_size
 
-        break
+        # break
 
     logits = np.concatenate(logits_list, axis=0)
     labels = np.concatenate(labels_list, axis=0)
