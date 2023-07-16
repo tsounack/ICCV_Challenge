@@ -5,9 +5,9 @@ from tqdm import tqdm
 
 
 def evaluation(models, config, dl, **kwargs):
-    logits_list = []
-    labels_list = []
-    losses_list = []
+    logits = np.array([])
+    labels = np.array([])
+    losses = np.array([])
     cumulative_index = 0
     post_processing = {}
 
@@ -21,30 +21,27 @@ def evaluation(models, config, dl, **kwargs):
 
         # Pre-allocate memory
         if num_batch == 0:
-            num_samples = len(dl.dataset)
-            logits_list = [np.zeros((num_samples, len(models), num_classes)) for _ in range(batch_size)]
-            labels_list = [np.zeros((num_samples, num_classes)) for _ in range(batch_size)]
-            losses_list = [np.zeros(len(models)) for _ in range(len(dl))]
+            logits = np.zeros((len(dl.dataset), len(models), num_classes))
+            labels = np.zeros((len(dl.dataset), num_classes))
+            losses = np.zeros((len(dl), len(models)))
 
         # iterating over the batch, stacking refs and hyps
         for i in range(batch_size):
             for j, r in enumerate(results):
-                logits_list[i][cumulative_index: cumulative_index + batch_size, j] = r['output'][i].data.cpu().numpy()
-            labels_list[i][cumulative_index: cumulative_index + batch_size] = label[i].data.cpu().numpy()
+                logits[cumulative_index + i][j] = r['output'][i].data.cpu().numpy()
+            labels[cumulative_index + i] = label[i].data.cpu().numpy()
 
         # Loss
         for j, r in enumerate(results):
-            losses_list[num_batch][j] = r['loss'].cpu().item()
+            losses[num_batch][j] = r['loss'].cpu().item()
 
         cumulative_index += batch_size
 
-        # break
-
-    logits = np.concatenate(logits_list, axis=0)
-    labels = np.concatenate(labels_list, axis=0)
-    losses = np.concatenate(losses_list, axis=0)
+        break
 
     preds = np.mean(logits, axis=1)
     loss = np.mean(losses)
+    logits = np.squeeze(logits)
+    labels = np.squeeze(labels)
 
     return {'loss': loss, 'refs': labels, 'hyps': logits}
