@@ -4,11 +4,11 @@ ckpt_dir: ckpt_mvqa3
 dataset:
   proto: ImLabel
   label:
-    root: data/CLASS/CVAMD
+    root: data/CLASS/CVAMD_test
     file: label.tok
 
   image:
-    root: data/CLASS/CVAMD
+    root: data/CLASS/CVAMD_test
     file: image.tok
     image_path: /scratch/users/tsounack/mimic-cxr-images-512
     load_memory: False
