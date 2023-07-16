@@ -1,28 +1,28 @@
 multi-label:True
-Fracture
-Pneumonia
-Cardiomegaly
-Pleural Other
-Infiltration
 Pneumomediastinum
-Edema
-Lung Opacity
 Pneumothorax
-No positive label
-Hernia
-Pleural Thickening
-Pleural Effusion
 Tortuous Aorta
-No Finding
-Calcification of the Aorta
-Mass
-Emphysema
-Fibrosis
 Atelectasis
-Nodule
-Subcutaneous Emphysema
+Pleural Other
+Pleural Thickening
+Fracture
+Lung Opacity
+Edema
 Pneumoperitoneum
-Lung Lesion
-Enlarged Cardiomediastinum
-Support Devices
+Emphysema
 Consolidation
+No Finding
+Lung Lesion
+Cardiomegaly
+Fibrosis
+Infiltration
+Pneumonia
+Calcification of the Aorta
+Hernia
+Nodule
+Pleural Effusion
+No positive label
+Enlarged Cardiomediastinum
+Mass
+Support Devices
+Subcutaneous Emphysema

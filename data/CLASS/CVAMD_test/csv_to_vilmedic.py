@@ -6,7 +6,7 @@ diseases = ["Atelectasis", "Calcification of the Aorta", "Cardiomegaly", "Consol
             "Pneumomediastinum", "Pneumonia", "Pneumoperitoneum", "Pneumothorax", "Subcutaneous Emphysema",
             "Support Devices", "Tortuous Aorta"]
 
-for mode in ["train", "development"]:
+for mode in ["train", "test"]:
     # Define the input and output file paths
     input_file = mode + '.csv'
 
