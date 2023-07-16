@@ -27,7 +27,7 @@ model:
     freeze: False
 
   adapter:
-    input_size: 1664
+    input_size: 1920
     output_size: 768
 
   transformer:
