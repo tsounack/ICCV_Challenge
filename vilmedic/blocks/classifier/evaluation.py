@@ -39,7 +39,7 @@ def evaluation(models, config, dl, **kwargs):
 
         cumulative_index += batch_size
 
-        # break
+        break
 
     logits = np.concatenate(logits_list, axis=0)
     labels = np.concatenate(labels_list, axis=0)
