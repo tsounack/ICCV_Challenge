@@ -1,25 +1,20 @@
 name: myvqa
-ckpt_dir: ckpt
+ckpt_dir: ckpt_mvqa2
 
 dataset:
   proto: ImLabel
   label:
-    root: data/MVQA
-    file: label.tok
+    root: data/CLASS/CVAMD
+    file: label_mvqa2.tok
 
   image:
-    root: data/MVQA
+    root: data/CLASS/CVAMD
     file: image.tok
-    image_path: data/images/imageclef-vqa-images-512/
+    image_path: /scratch/users/tsounack/mimic-cxr-images-512
+    load_memory: False
+    resize: 256
+    crop: 224
     ext: .jpg
-    custom_transform_train: >
-      transforms.Compose([
-                      transforms.Resize((232, 232)),
-                      transforms.ToTensor()])
-    custom_transform_validate: >
-      transforms.Compose([
-                      transforms.Resize((232, 232)),
-                      transforms.ToTensor()])
 
 model:
   proto: MVQA
