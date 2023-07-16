@@ -5,7 +5,7 @@ dataset:
   proto: ImLabel
   label:
     root: data/CLASS/CVAMD
-    file: label_mvqa2.tok
+    file: label.tok
 
   image:
     root: data/CLASS/CVAMD
