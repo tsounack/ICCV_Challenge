@@ -12,9 +12,9 @@ from transformers.models.bert_generation import BertGenerationConfig
 from vilmedic.blocks.losses.mvqa.LabelSmoothingCrossEntropyLoss import WeightedBCEWithLogitsLoss
 
 
-class MVQA3(nn.Module):
+class MVQA4(nn.Module):
     def __init__(self, cnn, classifier, adapter, transformer, loss, **kwargs):
-        super(MVQA3, self).__init__()
+        super(MVQA4, self).__init__()
 
         cnn_func = cnn.pop('proto')
         loss_func = loss.pop('proto')
