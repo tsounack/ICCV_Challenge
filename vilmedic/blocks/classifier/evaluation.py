@@ -32,8 +32,10 @@ def evaluation(models, config, dl, **kwargs):
             labels[cumulative_index + i] = label[i].data.cpu().numpy()
 
         # Loss
-        for j, r in enumerate(results):
-            losses[num_batch][j] = r['loss'].cpu().item()
+        loss_values = [r['loss'].cpu() for r in results]
+        stacked_losses = torch.stack(loss_values)
+        average_loss = torch.mean(stacked_losses).item()
+        losses[num_batch] = average_loss
 
         cumulative_index += batch_size
 
