@@ -20,7 +20,7 @@ model:
   proto: MVQA4
   cnn:
     proto: CNN
-    backbone: mimic_ch
+    backbone: XrvDenseNet
     output_layer: features
     dropout_out: 0.0
     permute: batch_first
