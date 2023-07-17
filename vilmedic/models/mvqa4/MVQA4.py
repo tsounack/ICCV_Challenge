@@ -24,7 +24,7 @@ class MVQA4(nn.Module):
         self.adapter = nn.Sequential(
             nn.Linear(adapter.pop('input_size'), 1500),
             torch.nn.LayerNorm(1500, eps=transformer.layer_norm_eps),
-            nn.Linear(adapter.pop('input_size'), 1200),
+            nn.Linear(1500, 1200),
             torch.nn.LayerNorm(1200, eps=transformer.layer_norm_eps),
             nn.Linear(1200, adapter.pop('output_size')),
             torch.nn.LayerNorm(transformer.hidden_size, eps=transformer.layer_norm_eps)
