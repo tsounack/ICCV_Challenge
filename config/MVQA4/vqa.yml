@@ -28,10 +28,10 @@ model:
 
   adapter:
     input_size: 1920
-    output_size: 768
+    output_size: 896
 
   transformer:
-    hidden_size: 768
+    hidden_size: 896
     intermediate_size: 2048
     num_hidden_layers: 14
     num_attention_heads: 14
@@ -43,7 +43,7 @@ model:
 
   classifier:
     proto: Classifier
-    input_size: 768
+    input_size: 896
     num_classes: 27
     dropout: 0.
 
