@@ -26,7 +26,7 @@ model:
     permute: batch_first
     freeze: False
     num_init_features: 32
-    in_channels: 3
+    in_channels: 1
 
   adapter:
     input_size: 1920
