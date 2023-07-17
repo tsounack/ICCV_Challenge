@@ -107,7 +107,7 @@ class Trainor(InitTrainor):
                     )
                     pbar.set_description(log)
 
-                # if iteration >= 2:
+                if iteration >= 2:
                     break
             # Perform last update if needed
             if (iteration % self.grad_accu != 0) and ('loss' in out):

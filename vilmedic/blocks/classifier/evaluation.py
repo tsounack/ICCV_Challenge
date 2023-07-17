@@ -39,7 +39,8 @@ def evaluation(models, config, dl, **kwargs):
 
         cumulative_index += batch_size
 
-        break
+        if num_batch >= 2:
+            break
 
     preds = np.mean(logits, axis=1)
     loss = np.mean(losses)
