@@ -25,6 +25,8 @@ model:
     dropout_out: 0.0
     permute: batch_first
     freeze: False
+    num_init_features: 32
+    in_channels: 3
 
   adapter:
     input_size: 1920
